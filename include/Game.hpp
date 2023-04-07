@@ -2,6 +2,7 @@
 
 #include "Pellet.hpp"
 #include "Snake.hpp"
+#include "SnakeAI.hpp"
 #include <memory>
 #include <SDL2/SDL.h>
 
@@ -26,6 +27,7 @@ private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
+    SnakeAI ai;
     Snake snake;
     Pellet pellet;
 };

@@ -24,9 +24,9 @@ Game::~Game()
 
 void Game::Run()
 {
-    constexpr uint32_t move_delay_ms = 150;
+    constexpr uint32_t move_delay_ms = 50;
     uint32_t start_ms = SDL_GetTicks();
-    Direction next_move_dir = Direction::NONE;
+    Direction next_move_dir = Direction::RIGHT;
     SDL_Event e;
 
     while(true)
@@ -34,6 +34,8 @@ void Game::Run()
         if(SDL_TICKS_PASSED(SDL_GetTicks() - move_delay_ms, start_ms))
         {
             start_ms = SDL_GetTicks();
+
+            next_move_dir = ai.CalculateMoveDir(snake, pellet.GetPos());
 
             // Prevent movement in opposite direction
             if(are_opposite(snake.GetMoveDir(), next_move_dir))
@@ -46,7 +48,8 @@ void Game::Run()
                 return;
             }
 
-            snake.Move(next_move_dir);
+            snake.SetMoveDir(next_move_dir);
+            snake.Move();
 
             // Should snake do om nom nom?
             if(snake.GetHeadPos() == pellet.GetPos())
@@ -77,18 +80,6 @@ void Game::Run()
                         return;
                     case SDLK_q:
                         return;
-                    case SDLK_UP:
-                        next_move_dir = Direction::UP;
-                        break;
-                    case SDLK_DOWN:
-                        next_move_dir = Direction::DOWN;
-                        break;
-                    case SDLK_LEFT:
-                        next_move_dir = Direction::LEFT;
-                        break;
-                    case SDLK_RIGHT:
-                        next_move_dir = Direction::RIGHT;
-                        break;
                 }
             }
         }

@@ -11,10 +11,11 @@ class Snake
 public:
     Snake(const Vec2i& pos);
 
-    void Move(Direction dir);
+    void Move();
     void Grow();
     void Draw(SDL_Renderer* renderer);
 
+    void SetMoveDir(Direction dir) { move_dir = dir; }
     void SetLength(int value) { length = value; }
 
     bool WillCollide(Direction dir) const;
