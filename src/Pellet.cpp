@@ -22,10 +22,10 @@ void Pellet::Reposition()
     pos = unoccupied[index];
 }
 
-void Pellet::Draw(SDL_Renderer* renderer)
+void Pellet::Draw(Window& window)
 {
     SDL_Rect rect{pos.x*50, pos.y*50, 50, 50};
 
-    SDL_SetRenderDrawColor(renderer, 180, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderFillRect(renderer, &rect);
+    window.SetDrawColor(180, 0, 0);
+    window.FillRect(rect);
 }

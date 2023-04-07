@@ -4,7 +4,7 @@
 
 int main()
 {
-    Game game(800, 450, "Snake");
+    Game game({800, 450, "Snake"});
     game.Run();
 
     return 0;

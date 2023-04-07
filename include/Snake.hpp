@@ -2,7 +2,7 @@
 
 #include "Direction.hpp"
 #include "Vec2i.hpp"
-#include <SDL2/SDL_render.h>
+#include "Window.hpp"
 
 
 
@@ -13,7 +13,7 @@ public:
 
     void Move();
     void Grow();
-    void Draw(SDL_Renderer* renderer);
+    void Draw(Window& window);
 
     void SetMoveDir(Direction dir) { move_dir = dir; }
     void SetLength(int value) { length = value; }

@@ -1,24 +1,17 @@
 #include "Game.hpp"
 #include "Utilities.hpp"
+#include <SDL2/SDL.h>
 
 
 
-Game::Game(int screen_w, int screen_h, const char* title):
-snake(Vec2i{4,4}), pellet(this)
+Game::Game(const WindowData& window_data):
+snake(Vec2i{4,4}), pellet(this), window(window_data)
 {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(screen_w, screen_h, 0, &window, &renderer);
-    SDL_SetWindowTitle(window, title);
-
     pellet.Reposition();
 }
 
 Game::~Game()
 {
-    if(renderer)
-        SDL_DestroyRenderer(renderer);
-    if(window)
-        SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
@@ -96,17 +89,17 @@ void Game::OnWin()
     };
     Vec2i offset{2,2};
 
-    SDL_SetRenderDrawColor(renderer, 50, 180, 50, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0, 50, 0, SDL_ALPHA_OPAQUE);
+    window.SetDrawColor(50, 180, 50);
+    window.Clear();
+    window.SetDrawColor(0, 50, 0);
     SDL_Rect rect{0, 0, 50, 50};
     for(const Vec2i& pos : display_positions)
     {
         rect.x = (offset.x + pos.x)*50;
         rect.y = (offset.y + pos.y)*50;
-        SDL_RenderFillRect(renderer, &rect);
+        window.DrawRect(rect);
     }
-    SDL_RenderPresent(renderer);
+    window.Present();
 
     // Hold win screen for some time
     const uint32_t start_ms = SDL_GetTicks();
@@ -173,26 +166,16 @@ const std::unique_ptr<Vec2i[]> Game::GetUnoccupiedPositions(int& count) const
 void Game::Render()
 {
     // Draw background
-    SDL_SetRenderDrawColor(renderer, 120, 120, 120, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
+    window.SetDrawColor(120, 120, 120);
+    window.Clear();
 
-    // Make mesh-like structure
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_Rect rect{0, 0, 50, 50};
-    for(int y = 0; y < 9; y++)
-    {
-        for(int x = 0; x < 16; x++)
-        {
-            rect.x = x * 50;
-            rect.y = y * 50;
-            SDL_RenderDrawRect(renderer, &rect);
-        }
-    }
+    window.SetDrawColor(0, 0, 0);
+    window.DrawGrid({0,0}, {16,9}, {50,50});
 
     // Render all actors
-    pellet.Draw(renderer);
-    snake.Draw(renderer);
+    pellet.Draw(window);
+    snake.Draw(window);
 
     // Display
-    SDL_RenderPresent(renderer);
+    window.Present();
 }

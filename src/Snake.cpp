@@ -37,16 +37,16 @@ void Snake::Grow()
     length++;
 }
 
-void Snake::Draw(SDL_Renderer* renderer)
+void Snake::Draw(Window& window)
 {
-    SDL_SetRenderDrawColor(renderer, 0, 180, 0, SDL_ALPHA_OPAQUE);
+    window.SetDrawColor(0, 180, 0);
 
     SDL_Rect rect{0, 0, 50, 50};
     for(int i = 0; i < length; i++)
     {
         rect.x = body[i].x*50;
         rect.y = body[i].y*50;
-        SDL_RenderFillRect(renderer, &rect);
+        window.FillRect(rect);
     }
 }
 

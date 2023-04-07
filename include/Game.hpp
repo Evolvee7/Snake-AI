@@ -1,17 +1,17 @@
 #pragma once
 
 #include "Pellet.hpp"
+#include "Window.hpp"
 #include "Snake.hpp"
 #include "SnakeAI.hpp"
 #include <memory>
-#include <SDL2/SDL.h>
 
 
 
 class Game
 {
 public:
-    Game(int screen_w, int screen_h, const char* title);
+    Game(const WindowData& window_data);
     ~Game();
 
     void Run();
@@ -24,9 +24,8 @@ private:
     void Render();
 
 private:
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
-
+    Window window;
+    
     SnakeAI ai;
     Snake snake;
     Pellet pellet;

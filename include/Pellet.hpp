@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vec2i.hpp"
-#include <SDL2/SDL_render.h>
+#include "Window.hpp"
 
 
 
@@ -12,7 +12,7 @@ class Pellet
 public:
     Pellet(Game* game);
     void Reposition();
-    void Draw(SDL_Renderer* renderer);
+    void Draw(Window& window);
 
     const Vec2i& GetPos() const { return pos; }
 
