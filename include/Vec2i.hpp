@@ -16,4 +16,9 @@ struct Vec2i
     {
         return !(*this == other);
     }
+
+    Vec2i operator - (const Vec2i& other) const
+    {
+        return Vec2i{x-other.x, y-other.y};
+    }
 };

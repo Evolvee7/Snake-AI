@@ -15,11 +15,13 @@ public:
     void Grow();
     void Draw(Window& window);
 
+    void SetHeadPos(const Vec2i& pos) { head = pos; }
     void SetMoveDir(Direction dir) { move_dir = dir; }
     void SetLength(int value) { length = value; }
 
     bool WillCollide(Direction dir) const;
     bool IsCollision(const Vec2i& pos) const;
+    bool IsSelfCollision() const;
     int GetLength() const { return length; }
     Direction GetMoveDir() const { return move_dir; }
     const Vec2i& GetHeadPos() const { return body[0]; }

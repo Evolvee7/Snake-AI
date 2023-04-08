@@ -68,3 +68,13 @@ bool Snake::IsCollision(const Vec2i& pos) const
     }
     return false;
 }
+
+bool Snake::IsSelfCollision() const
+{
+    for(int i = 1; i < length; i++)
+    {
+        if(head == body[i])
+            return true;
+    }
+    return false;
+}

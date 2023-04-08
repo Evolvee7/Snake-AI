@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "Utilities.hpp"
+#include "Agent.hpp"
 #include <SDL2/SDL.h>
 
 
@@ -7,6 +8,7 @@
 Game::Game(const WindowData& window_data):
 snake(Vec2i{4,4}), pellet(this), window(window_data)
 {
+    snake.Grow();
     pellet.Reposition();
 }
 
@@ -15,12 +17,21 @@ Game::~Game()
     SDL_Quit();
 }
 
+void Game::Reset()
+{
+    snake.SetLength(2);
+    snake.SetHeadPos({4,4});
+    pellet.Reposition();
+}
+
 void Game::Run()
 {
     constexpr uint32_t move_delay_ms = 50;
     uint32_t start_ms = SDL_GetTicks();
-    Direction next_move_dir = Direction::RIGHT;
+    next_move_dir = Direction::RIGHT;
     SDL_Event e;
+
+    Agent agent(this);
 
     while(true)
     {
@@ -28,21 +39,18 @@ void Game::Run()
         {
             start_ms = SDL_GetTicks();
 
-            next_move_dir = ai.CalculateMoveDir(snake, pellet.GetPos());
-
-            // Prevent movement in opposite direction
-            if(are_opposite(snake.GetMoveDir(), next_move_dir))
-                next_move_dir = snake.GetMoveDir();
+            next_move_dir = agent.GetNextDirection();
             
-            // Predict self-collision
-            if(snake.WillCollide(next_move_dir)) // gameover condition
-            {
-                OnGameOver();
-                return;
-            }
-
             snake.SetMoveDir(next_move_dir);
             snake.Move();
+
+            agent.TeachModel();
+
+            if(snake.IsSelfCollision())
+            {
+                OnGameOver();
+                Reset();
+            }
 
             // Should snake do om nom nom?
             if(snake.GetHeadPos() == pellet.GetPos())
@@ -51,7 +59,7 @@ void Game::Run()
                 if(snake.GetLength() == 16*9) // win condition
                 {
                     OnWin();
-                    return;
+                    Reset();
                 }
                 else
                     pellet.Reposition();
@@ -64,16 +72,6 @@ void Game::Run()
             if(e.type == SDL_QUIT)
             {
                 return;
-            }
-            else if(e.type == SDL_KEYDOWN)
-            {
-                switch(e.key.keysym.sym)
-                {
-                    case SDLK_ESCAPE:
-                        return;
-                    case SDLK_q:
-                        return;
-                }
             }
         }
     }
