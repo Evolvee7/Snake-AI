@@ -22,9 +22,10 @@ private:
     float GetReward() const;
 
     Action GetBestAction(const State& state);
+    bool IsBestDirForState(Direction dir, const State& state);
     // Helper functions for GetBestAction() method below:
-    bool UpdateActionIfGood(const State& state, Action& action, Direction dir);
-    void GetDirsInOrder(Direction dirs[4], int dist_up, int dist_down, int dist_left, int dist_right);
+    //bool UpdateActionIfGood(const State& state, Action& action, Direction dir);
+    //void GetDirsInOrder(Direction dirs[4], int dist_up, int dist_down, int dist_left, int dist_right);
 
 private:
     Game* game = nullptr;

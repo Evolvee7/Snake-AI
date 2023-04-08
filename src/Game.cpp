@@ -26,9 +26,8 @@ void Game::Reset()
 
 void Game::Run()
 {
-    constexpr uint32_t move_delay_ms = 50;
+    constexpr uint32_t move_delay_ms = 30;
     uint32_t start_ms = SDL_GetTicks();
-    next_move_dir = Direction::RIGHT;
     SDL_Event e;
 
     Agent agent(this);
@@ -38,10 +37,8 @@ void Game::Run()
         if(SDL_TICKS_PASSED(SDL_GetTicks() - move_delay_ms, start_ms))
         {
             start_ms = SDL_GetTicks();
-
-            next_move_dir = agent.GetNextDirection();
             
-            snake.SetMoveDir(next_move_dir);
+            snake.SetMoveDir(agent.GetNextDirection());
             snake.Move();
 
             agent.TeachModel();
@@ -106,7 +103,7 @@ void Game::OnWin()
 
 void Game::OnGameOver()
 {
-    constexpr int anim_time_ms = 2000;
+    constexpr int anim_time_ms = 1000;
     const int delay_ms = anim_time_ms/snake.GetLength();
     uint32_t start_ms = SDL_GetTicks();
 
@@ -167,8 +164,8 @@ void Game::Render()
     window.SetDrawColor(120, 120, 120);
     window.Clear();
 
-    window.SetDrawColor(0, 0, 0);
-    window.DrawGrid({0,0}, {16,9}, {50,50});
+    //window.SetDrawColor(0, 0, 0);
+    //window.DrawGrid({0,0}, {16,9}, {50,50});
 
     // Render all actors
     pellet.Draw(window);

@@ -59,7 +59,7 @@ private:
 private:
     float Q[4096][16];   // 2^12 different states, 2^4 different actions
 
-    const float learning_rate = 0.1;
-    const float discount_factor = 0.9;
+    const float learning_rate = 0.3;
+    const float discount_factor = 0.8;
     //const float discount_factor_decrease = 0.01;
 };

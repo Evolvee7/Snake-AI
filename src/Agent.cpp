@@ -24,8 +24,8 @@ Direction Agent::GetNextDirection() const
     // Get best action to current state
     Action action = model.BestAction(GetState());
 
-    if(action.MOVE_UP == 1 || action.MOVE_DOWN == 1 || action.MOVE_LEFT == 1 || action.MOVE_RIGHT == 1)
-        std::cerr << "AI made it!" << std::endl;
+    //if(action.MOVE_UP == 1 || action.MOVE_DOWN == 1 || action.MOVE_LEFT == 1 || action.MOVE_RIGHT == 1)
+    //    std::cerr << "AI made it!" << std::endl;
     
     // Get the best direction to move
     if(action.MOVE_UP == 1)
@@ -126,15 +126,16 @@ State Agent::GetState() const
 
 Action Agent::GetAction() const
 {
+    const Snake& snake = game->GetSnake();
     Action action;
 
-    if(game->GetMoveDir() == Direction::UP)
+    if(snake.GetMoveDir() == Direction::UP)
         action.MOVE_UP = 1;
-    if(game->GetMoveDir() == Direction::DOWN)
+    if(snake.GetMoveDir() == Direction::DOWN)
         action.MOVE_DOWN = 1;
-    if(game->GetMoveDir() == Direction::LEFT)
+    if(snake.GetMoveDir() == Direction::LEFT)
         action.MOVE_LEFT = 1;
-    if(game->GetMoveDir() == Direction::RIGHT)
+    if(snake.GetMoveDir() == Direction::RIGHT)
         action.MOVE_RIGHT = 1;
     
     return action;
@@ -157,6 +158,95 @@ float Agent::GetReward() const
     return reward;
 }
 
+Action Agent::GetBestAction(const State& state)
+{
+    Action action;
+    bool found = false;
+
+    if(IsBestDirForState(Direction::UP, state))
+    {
+        action.MOVE_UP = 1;
+        found = true;
+    }
+    else if(IsBestDirForState(Direction::DOWN, state))
+    {
+        action.MOVE_DOWN = 1;
+        found = true;
+    }
+    else if(IsBestDirForState(Direction::LEFT, state))
+    {
+        action.MOVE_LEFT = 1;
+        found = true;
+    }
+    else if(IsBestDirForState(Direction::RIGHT, state))
+    {
+        action.MOVE_RIGHT = 1;
+        found = true;
+    }
+
+    if(!found)
+    {
+        if(state.MOVE_UP == 1 && state.DIE_UP == 0)
+        {
+            action.MOVE_UP = 1;
+            found = true;
+        }
+        else if(state.MOVE_DOWN == 1 && state.DIE_DOWN == 0)
+        {
+            action.MOVE_DOWN = 1;
+            found = true;
+        }
+        else if(state.MOVE_LEFT == 1 && state.DIE_LEFT == 0)
+        {
+            action.MOVE_LEFT = 1;
+            found = true;
+        }
+        else if(state.MOVE_RIGHT == 1 && state.DIE_RIGHT == 0)
+        {
+            action.MOVE_RIGHT = 1;
+            found = true;
+        }
+    }
+
+    assert(found && "None of action is the best??");
+
+    return action;
+}
+
+bool Agent::IsBestDirForState(Direction dir, const State& state)
+{
+    if(dir == Direction::UP)
+    {
+        if(state.PELLET_UP == 1 && state.MOVE_UP == 1 && state.DIE_UP == 0)
+        {
+            return true;
+        }
+    }
+    else if(dir == Direction::DOWN)
+    {
+        if(state.PELLET_DOWN == 1 && state.MOVE_DOWN == 1 && state.DIE_DOWN == 0)
+        {
+            return true;
+        }
+    }
+    else if(dir == Direction::LEFT)
+    {
+        if(state.PELLET_LEFT == 1 && state.MOVE_LEFT == 1 && state.DIE_LEFT == 0)
+        {
+            return true;
+        }
+    }
+    else if(dir == Direction::RIGHT)
+    {
+        if(state.PELLET_RIGHT == 1 && state.MOVE_RIGHT == 1 && state.DIE_RIGHT == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+/*
 Action Agent::GetBestAction(const State& state)
 {
     Action action;
@@ -431,3 +521,4 @@ void Agent::GetDirsInOrder(Direction dirs[4], int dist_up, int dist_down, int di
         }
     }
 }
+*/

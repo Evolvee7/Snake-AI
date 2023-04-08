@@ -21,7 +21,6 @@ public:
 
     const Snake& GetSnake() const { return snake; }
     const Pellet& GetPellet() const { return pellet; }
-    Direction GetMoveDir() const { return next_move_dir; }
 
     const std::unique_ptr<Vec2i[]> GetUnoccupiedPositions(int& count) const;
 
@@ -33,6 +32,4 @@ private:
     
     Snake snake;
     Pellet pellet;
-
-    Direction next_move_dir;
 };
