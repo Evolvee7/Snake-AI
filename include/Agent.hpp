@@ -33,7 +33,7 @@ private:
 
     State last_state;
 
-    const float die_reward = -100.0;
-    const float eat_reward = 10.0;
-    const float nothing_reward = 0.0;
+    const float die_reward = -1000.0;
+    const float opposite_move_reward = -30.0;
+    const float eat_reward = 50.0;
 };

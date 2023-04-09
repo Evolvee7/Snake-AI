@@ -7,6 +7,7 @@ Snake::Snake(const Vec2i& pos)
 {
     head = pos;
     move_dir = Direction::NONE;
+    last_move_dir = Direction::NONE;
 }
 
 void Snake::Move()

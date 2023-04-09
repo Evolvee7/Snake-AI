@@ -2,13 +2,13 @@
 #include "Utilities.hpp"
 #include "Agent.hpp"
 #include <SDL2/SDL.h>
+#include <iostream>
 
 
 
 Game::Game(const WindowData& window_data):
 snake(Vec2i{4,4}), pellet(this), window(window_data)
 {
-    snake.Grow();
     pellet.Reposition();
 }
 
@@ -19,14 +19,17 @@ Game::~Game()
 
 void Game::Reset()
 {
-    snake.SetLength(2);
+    snake.SetLength(1);
     snake.SetHeadPos({4,4});
     pellet.Reposition();
 }
 
 void Game::Run()
 {
-    constexpr uint32_t move_delay_ms = 30;
+    std::cout << "UP-KEY to decrease frame time" << std::endl;
+    std::cout << "DOWN-KEY to increase frame time" << std::endl;
+
+    uint32_t move_delay_ms = 51;
     uint32_t start_ms = SDL_GetTicks();
     SDL_Event e;
 
@@ -69,6 +72,16 @@ void Game::Run()
             if(e.type == SDL_QUIT)
             {
                 return;
+            }
+            else if(e.key.keysym.sym == SDLK_UP)
+            {
+                if(move_delay_ms > 10)
+                    move_delay_ms -= 1;
+            }
+            else if(e.key.keysym.sym == SDLK_DOWN)
+            {
+                if(move_delay_ms < 1000)
+                move_delay_ms += 1;
             }
         }
     }

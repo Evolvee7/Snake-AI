@@ -1,5 +1,6 @@
 #include "Agent.hpp"
 #include "Game.hpp"
+#include "Utilities.hpp"
 #include <cassert>
 #include <random>
 #include <iostream>
@@ -152,8 +153,9 @@ float Agent::GetReward() const
         reward += die_reward;
     else if(snake.GetHeadPos() == pellet.GetPos())
         reward += eat_reward;
-    else
-        reward += nothing_reward;
+    
+    if(are_opposite(snake.GetMoveDir(), snake.GetLastMoveDir()))
+        reward += opposite_move_reward;
     
     return reward;
 }
